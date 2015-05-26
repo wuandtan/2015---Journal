@@ -1,0 +1,325 @@
+\documentclass[journal]{IEEEtran}
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Network-based Online Video freeze prediction in HTTP Adaptive Streaming}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+
+\author{Tingyao~Wu,~\IEEEmembership{Member,~IEEE,}
+				Stefano~Petrangeli,~\IEEEmembership{Member,~IEEE,}
+        Rafael~Huysegems,~\IEEEmembership{Member,~IEEE,}
+        and~Tom~Bostoen,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
+\thanks{T. Wu, R. Huysegems and T. Bostoen are with Bell Labs, Alcatel-Lucent, Copernicuslaan 50, B-2018 Antwerpen, Belgium. e-mail: (tingyao.wu@alcatel-lucent.com).}% <-this % stops a space
+\thanks{S. Petrangeli is with Department of Information
+Technology (INTEC), Ghent University- iMinds, Gaston Crommenlaan
+8 (Bus 201), 9050 Ghent, Belgium.}% <-this % stops a space
+\thanks{Manuscript received April 19, 2005; revised September 17, 2014.}}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2014 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract or keywords.
+\begin{abstract}
+HTTP adaptive streaming (HAS) has become a prevailing technology for media delivery technology over mobile and fixed networks. 
+%Internet service providers and CDN (Content Delivery Network) providers are interested in network-based monitoring the client's Quality of Experience (QoE) for HAS video sessions. 
+The client's Quality of Experience (QoE) for HAS video sessions is particularly of interests in network providers and Content Delivery Network (CDN) providers. But typically, network providers are not able to assess to clients to obtain QoE relevant parameters, such as freeze, initial loading time, quality switches, etc.
+ 
+In our previous work, we designed a HAS QoE monitoring system based on the sequence of HTTP GET requests collected at the CDN nodes. The system relies on a technique called session reconstruction to retrieve the major QoE parameters without modification of the clients. However, session reconstruction is computationally intensive and requires manual configuration of reconstruction rules. 
+To overcome the limitations of session reconstruction, this paper proposes a scalable machine learning (ML) based scheme that detects video freezes using a few high-level features extracted from the network-based monitoring data. 
+We determine the discriminative features for session representation and assess five potential classifiers. We select the C4.5 decision tree as classifier because of its simplicity, scalability, accuracy, and explainability. To evaluate our solution, we use traces of Apple HTTP Live Streaming video sessions obtained from a number of operational CDN nodes and traces of Microsoft Smooth Streaming video sessions acquired in a controlled lab environment. Experimental results show that an accuracy of about 98\%, 98\%, and 90\% can be obtained for the detection of a video freeze, a long video freeze, and multiple video freezes, respectively. Excluding log parsing, the computational cost of the proposed video-freeze detection is 33 times smaller than needed for session reconstruction.
+
+\end{abstract}
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+HTTP Adaptive Streaming, Decision Tree C4.5, Freeze Prediction, Quality of Experience
+\end{IEEEkeywords}
+
+
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps.
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+\IEEEPARstart{V}{ideo} streaming has occupied more than half of traffic over the Internet. In recent years, video delivery over traditional best-effort Internet becomes very popular. Among this, HTTP Adaptives Steaming (HAS) is increasingly adopted and has become a key technology. HTTP adaptive streaming systems~\cite{stockhammer2011dynamic} include MPEG-DASH, Apple's HTTP Live Streaming, Microsoft’s Smooth Streaming, Adobe’s Dynamic Streaming, etc. Typically, in a HAS architecture, video content, hosted on an HTTP Web server, is encoded in different quality levels (bit-rates), and chunked into independent segments. A HAS client requests the segments with different qualities in a linear way using HTTP GET requests and downloads them using plain HTTP progressive download. The retrieved segments can be played back as a seamless video, possibly switching among different quality levels. The key feature of HAS is that it is the client that is responsible for determining which quality level to download according to its available resources. Server/network providers do not have the control over the quality requests.  
+One of the main advantages of introducing HAS as a delivery/playout method is that, the client could adapt its quality requests based on the perceived bandwidth: it enables the client to smoothly play the video with a low quality level even when the perceived bandwidth is very limited, while when a high bandwidth is available, it supports the client to demand high quality levels.  
+
+With the growing pervasion of HAS deployments, network and CDN providers raise interests in knowing the end-user quality of experience (QoE) of HAS sessions over their network, because QoE reveals the satisfaction of their users. Although QoE is the subjective perception of end-users, the objective QoE relevant parameters, including the statistics of bit-rates, freezes frequency and freeze durations, etc, can be used to model the end-users' Mean Opinion Score (MOS)~\cite{de2013model}. This inspires network/CDN providers to obtain the QoE relevant parameters, as an indirect way to evaluate the satisfaction of end-users. While a HAS client may report these parameters to the Web server (for instance, enabling Advanced Logging in Microsoft Internet Information Services (IIS) could require Microsoft Silverlight clients to send the status of medie content consumption to the IIS server at a regular time basis), typically it does not report these parameters to intermediate network nodes; they are only able to intercept the sequence of HTTP GET requests sent from the client to the server/CDN. So retrieving QoE relevant parameters from the sequence of HTTP GET requests within a single video session is a plausible method to evaluate end-user's QoE. 
+Indeed, in our previous study~\cite{Huysegems:2012:SRH:2330748.2330763}, we demonstrated that from the sequence of HTTP GET requests collected at intermediate network elements, the HAS session can be reconstructed to derive all QoE related parameters. These parameters include the average playout quality, changes in the play-out quality, rebuffering due to buffer starvation, rebuffering caused by interactivity, etc. The session reconstruction technique relies on some manually rules discovered by the trial-and-error method, without modifying the original HAS client, and thus is a feasible network based method to evaluate the video delivery quality of HAS.
+
+Among all objective QoE relevant parameters, freeze/re-buffering is undoubtedly the most deleterious factor to destroy end-users' satisfaction and engagement. The 2015 annual report of Conviva~\cite{convivaC:2015} shows that 28.8\% of video sessions experience a rebuffering event, but only 1\% increase of rebuffering could reduce the video engagement with 14 minutes. 
+Although the session reconstruction has shown its effectiveness, the effort of the manual trial-and-error rule discovery reduces its generalization capability; one has to manually re-configure the construction rules for a new HAS deployment.  
+
+Freeze is the most important factor. but it has to rely on session reconstruction. use machine learning.
+
+contributions. (1) freeze detection (2) online freeze prediction
+
+paper organization
+
+\section {Related work}
+HAS QoE; 
+network/server side QoE evaluation
+study of Freeze 
+
+\section{proposed frame work}
+\subsection{Architectural description}
+\subsection{decision tree C4.5}
+
+\section{performance evaluation}
+
+\subsection{experimental setup}
+		\subsubsection{session-based freeze detection}
+		\subsubsection{request-based online freeze prediction}
+
+\subsection{Dataset}
+\subsection{Field data set}
+\subsection{lab data set}
+\subsection{openflow data set}
+\subsection{discussion}
+
+\section{Conclusions}
+Subsection text here.
+
+
+
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+%
+%% you can choose not to have a title for an appendix
+%% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
+%
+
+% use section* for acknowledgment
+\section*{Acknowledgment}
+
+
+The research was performed partially within the iMinds VFORCE
+(Video: 4K Composition and Efficient streaming)
+project under IWT grant agreement no. 130655.
+
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+%\begin{thebibliography}{1}
+%
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+  %0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%
+%\end{thebibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{ref}
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+\begin{IEEEbiography}{Michael Shell}
+Biography text here.
+\end{IEEEbiography}
+
+% if you will not have a photo at all:
+\begin{IEEEbiographynophoto}{John Doe}
+Biography text here.
+\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+\begin{IEEEbiographynophoto}{Jane Doe}
+Biography text here.
+\end{IEEEbiographynophoto}
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+
